@@ -1,0 +1,13 @@
+*{box-sizing: border-box;}
+
+.highScore {
+
+    float: left;
+}
+.main {
+
+    float: left;
+}
+.header {
+    border: 1px solid red;
+    

@@ -1,28 +1,85 @@
 <!--CS 1520 Assignment 2 
 
 
-Regex: ([A|B|S])(:|\()([A-J])(10|[1-9])-\3(10|[1-9]);|(?:[A-J])^\3;
-
+(?:([ABS]):?\(?([A-J])(10|[1-9])-(?:\2(10|[1-9])|[A-J]\3)\)?;? ?){3}
 	Author: Jacob Winkler-->
 	
 <head>	
 	<title>BattleShip!</title>
 	<link rel ="stylesheet" type="text/css" href="main.css">
+	<script type ="text/javascript"> function placementTester(placeString, player)
+	{
+		//regular expression that ensures the user only uses a single A, B and S at the beginning of each ship and that the locations are either within the same row or the same column
+		var reg_ex =/(?:([ABS]):?\(?([A-J])(10|[1-9])-(?:\2(?:10|[1-9])|[A-J]\3)\)?;? ?)(?:((?!\1)[ABS]):?\(?([A-J])(10|[1-9])-(?:\5(?:10|[1-9])|[A-J]\6)\)?;? ?)(?:((?!\1)(?!\4)[ABS]):?\(?([A-J])(10|[1-9])-(?:\8(?:10|[1-9])|[A-J]\9)\)?;? ?)/;
+		var placeCheck = false;
+		var firstLoop = true;
+		var temp;
+		var temp2;
+		var shipLength;
+	
+		//loop to ensure entered values are in the language denoted by the regular expression as well as to check to see if ships are properly sized
+		while(!placeCheck)
+		{
+			// If the users original string is fine, then we do not want to ask them for ships again. 
+			if(!firstLoop)
+			{
+				placeString = prompt(player+", enter your Ship Placements in a supported format\n(Ensure there is only 1 A, B, and S, as well as all placements either have their column or row match): ","A:A1-A5;B:B1-B4;S:C1-C3");
+			}
+			placeCheck = reg_ex.test(placeString);
+			//don't do the extra work if the string is not in the language of the regular expression
+			if(placeCheck)
+			{
+				//reduce the string down to a single  format, to allow for easy parsing
+				placeString = placeString.replace(/[ ()]/g,"");
+				placeString.trim();
 
+				//split the string into the different ships
+				temp = placeString.split(";");
+				//ensure that the lengths of the ships are correct
+				for(i=0;i<temp.length;i++)
+				{
+					temp2 = temp[i].split(":");
+					//change the length for checking whether the ship has the correct number of spaces
+					switch(temp2[0])
+					{
+						case "A":
+						shipLength = 4;
+						break;
+						case"B":
+						shipLength = 3;
+						break;
+						case "S":
+						shipLength = 2;
+						break;
+					}
+					//check to see if the ship has the correct number of spaces, if not the forma is "invalid"
+					if(((temp2[1].charCodeAt(3)-temp2[1].charCodeAt(0)) != shipLength)&& ((temp2[1].charCodeAt(4)-temp2[1].charCodeAt(1))!= shipLength))
+						{
+							placeCheck=false;
+						}
+				}
+			}
+			//ensure that if we loop again our second prompt will appear
+			firstLoop=false;
+		}
+	}
+	</script>
 
 
 </head>
 
 <body>
-	<script> 
+	<script type ="text/javascript"> 
 		var playerOne = prompt("Enter Name of Player 1: ", "Player 1");
-		var pplayOnePlace = prompt(playerOne+", enter your Ship Placements: ","A:A1-A5");
+		var playOnePlace = prompt(playerOne+", enter your Ship Placements: ","A:A1-A5;B:B1-B4;S:C1-C3");
+			placementTester(playOnePlace, playerOne);
+		
+		
 		var playerTwo = prompt("Enter Name of Player 2: ", "Player 2");
-		var playTwoPlace = prompt(playerTwo+", enter your Ship Placements: ","A:A1-A5");
+		var playTwoPlace = prompt(playerTwo+", enter your Ship Placements: ","A:A1-A5;B:B1-B4;S:C1-C3");
+		placementTester(playTwoPlace, playerTwo);
 	</script>
 	
-
-</div>
 
 
 

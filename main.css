@@ -1,13 +1,36 @@
-*{box-sizing: border-box;}
-
-.highScore {
-
-    float: left;
+h1
+{
+	font-family: fantasy;
+	text-align: center;
+	font-size: 60px;
 }
-.main {
-
-    float: left;
+body
+{
+	background-color: grey;
 }
-.header {
-    border: 1px solid red;
+
+.playBlock
+{
+	background-color: cyan;
+	width: 20px;
+    height: 20px;
+    outline: 1px solid;
+	
+
+	
+}
+.board {
+  display: grid;
+  width: 220px;
+  height:220px;
+  grid-template-columns: 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.grid
+{
+	display: none;
+}
+	
     

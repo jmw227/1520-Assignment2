@@ -1,89 +1,315 @@
+<!DOCTYPE html>
 <!--CS 1520 Assignment 2 
-
-
-(?:([ABS]):?\(?([A-J])(10|[1-9])-(?:\2(10|[1-9])|[A-J]\3)\)?;? ?){3}
 	Author: Jacob Winkler-->
-	
-<head>	
-	<title>BattleShip!</title>
-	<link rel ="stylesheet" type="text/css" href="main.css">
-	<script type ="text/javascript"> function placementTester(placeString, player)
-	{
-		//regular expression that ensures the user only uses a single A, B and S at the beginning of each ship and that the locations are either within the same row or the same column
-		var reg_ex =/(?:([ABS]):?\(?([A-J])(10|[1-9])-(?:\2(?:10|[1-9])|[A-J]\3)\)?;? ?)(?:((?!\1)[ABS]):?\(?([A-J])(10|[1-9])-(?:\5(?:10|[1-9])|[A-J]\6)\)?;? ?)(?:((?!\1)(?!\4)[ABS]):?\(?([A-J])(10|[1-9])-(?:\8(?:10|[1-9])|[A-J]\9)\)?;? ?)/;
-		var placeCheck = false;
-		var firstLoop = true;
-		var temp;
-		var temp2;
-		var shipLength;
-	
-		//loop to ensure entered values are in the language denoted by the regular expression as well as to check to see if ships are properly sized
-		while(!placeCheck)
-		{
-			// If the users original string is fine, then we do not want to ask them for ships again. 
-			if(!firstLoop)
-			{
-				placeString = prompt(player+", enter your Ship Placements in a supported format\n(Ensure there is only 1 A, B, and S, as well as all placements either have their column or row match): ","A:A1-A5;B:B1-B4;S:C1-C3");
-			}
-			placeCheck = reg_ex.test(placeString);
-			//don't do the extra work if the string is not in the language of the regular expression
-			if(placeCheck)
-			{
-				//reduce the string down to a single  format, to allow for easy parsing
-				placeString = placeString.replace(/[ ()]/g,"");
-				placeString.trim();
-
-				//split the string into the different ships
-				temp = placeString.split(";");
-				//ensure that the lengths of the ships are correct
-				for(i=0;i<temp.length;i++)
-				{
-					temp2 = temp[i].split(":");
-					//change the length for checking whether the ship has the correct number of spaces
-					switch(temp2[0])
-					{
-						case "A":
-						shipLength = 4;
-						break;
-						case"B":
-						shipLength = 3;
-						break;
-						case "S":
-						shipLength = 2;
-						break;
-					}
-					//check to see if the ship has the correct number of spaces, if not the forma is "invalid"
-					if(((temp2[1].charCodeAt(3)-temp2[1].charCodeAt(0)) != shipLength)&& ((temp2[1].charCodeAt(4)-temp2[1].charCodeAt(1))!= shipLength))
-						{
-							placeCheck=false;
-						}
-				}
-			}
-			//ensure that if we loop again our second prompt will appear
-			firstLoop=false;
-		}
-	}
-	</script>
-
-
-</head>
-
-<body>
-	<script type ="text/javascript"> 
-		var playerOne = prompt("Enter Name of Player 1: ", "Player 1");
-		var playOnePlace = prompt(playerOne+", enter your Ship Placements: ","A:A1-A5;B:B1-B4;S:C1-C3");
-			placementTester(playOnePlace, playerOne);
+<html>	
+	<head>	
 		
-		
-		var playerTwo = prompt("Enter Name of Player 2: ", "Player 2");
-		var playTwoPlace = prompt(playerTwo+", enter your Ship Placements: ","A:A1-A5;B:B1-B4;S:C1-C3");
-		placementTester(playTwoPlace, playerTwo);
-	</script>
-	
+		<title>BattleShip!</title>
+		<link rel ="stylesheet" type="text/css" href="main.css">
+		<script type ="text/javascript" src="functions.js"></script>
 
+	</head>
 
-
-
-
-
-</body>
+	<body>
+				<h1>BattleShip</h1>
+				<div align = center id= "mainPlaySpace">
+					<button type ="button" onclick="playerInfo()" id = "playButton">Play</button>
+					<div id = "topGrid"  class= "grid">
+						<div id="grid" class="board">
+							<div class="column">
+										<div class="playBlock"></div>
+										<div class="playBlock">A</div>
+										<div class="playBlock">B</div>
+										<div class="playBlock">C</div>
+										<div class="playBlock">D</div>
+										<div class="playBlock">E</div>
+										<div class="playBlock">F</div>
+										<div class="playBlock">G</div>
+										<div class="playBlock">H</div>
+										<div class="playBlock">I</div>
+										<div class="playBlock">J</div>
+							</div>
+							<div class="column">
+										<div class="playBlock">1</div>
+										<div class="playBlock" id= "TA1" ></div>
+										<div class="playBlock" id= "TB1" ></div>
+										<div class="playBlock" id= "TC1" ></div>
+										<div class="playBlock" id= "TD1" ></div>
+										<div class="playBlock" id= "TE1" ></div>
+										<div class="playBlock" id= "TF1" ></div>
+										<div class="playBlock" id= "TG1" ></div>
+										<div class="playBlock" id= "TH1" ></div>
+										<div class="playBlock" id= "TI1" ></div>
+										<div class="playBlock" id= "TJ1" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">2</div>
+										<div class="playBlock" id= "TA2" ></div>
+										<div class="playBlock" id= "TB2" ></div>
+										<div class="playBlock" id= "TC2" ></div>
+										<div class="playBlock" id= "TD2" ></div>
+										<div class="playBlock" id= "TE2" ></div>
+										<div class="playBlock" id= "TF2" ></div>
+										<div class="playBlock" id= "TG2" ></div>
+										<div class="playBlock" id= "TH2" ></div>
+										<div class="playBlock" id= "TI2" ></div>
+										<div class="playBlock" id= "TJ2" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">3</div>
+										<div class="playBlock" id= "TA3" ></div>
+										<div class="playBlock" id= "TB3" ></div>
+										<div class="playBlock" id= "TC3" ></div>
+										<div class="playBlock" id= "TD3" ></div>
+										<div class="playBlock" id= "TE3" ></div>
+										<div class="playBlock" id= "TF3" ></div>
+										<div class="playBlock" id= "TG3" ></div>
+										<div class="playBlock" id= "TH3" ></div>
+										<div class="playBlock" id= "TI3" ></div>
+										<div class="playBlock" id= "TJ3" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">4</div>
+										<div class="playBlock" id= "TA4" ></div>
+										<div class="playBlock" id= "TB4" ></div>
+										<div class="playBlock" id= "TC4" ></div>
+										<div class="playBlock" id= "TD4" ></div>
+										<div class="playBlock" id= "TE4" ></div>
+										<div class="playBlock" id= "TF4" ></div>
+										<div class="playBlock" id= "TG4" ></div>
+										<div class="playBlock" id= "TH4" ></div>
+										<div class="playBlock" id= "TI4" ></div>
+										<div class="playBlock" id= "TJ4" ></div>
+										</div>
+							<div class="column">
+										<div class="playBlock" id= "">5</div>
+										<div class="playBlock" id= "TA5" ></div>
+										<div class="playBlock" id= "TB5" ></div>
+										<div class="playBlock" id= "TC5" ></div>
+										<div class="playBlock" id= "TD5" ></div>
+										<div class="playBlock" id= "TE5" ></div>
+										<div class="playBlock" id= "TF5" ></div>
+										<div class="playBlock" id= "TG5" ></div>
+										<div class="playBlock" id= "TH5" ></div>
+										<div class="playBlock" id= "TI5" ></div>
+										<div class="playBlock" id= "TJ5" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">6</div>
+										<div class="playBlock" id= "TA6" ></div>
+										<div class="playBlock" id= "TB6" ></div>
+										<div class="playBlock" id= "TC6" ></div>
+										<div class="playBlock" id= "TD6" ></div>
+										<div class="playBlock" id= "TE6" ></div>
+										<div class="playBlock" id= "TF6" ></div>
+										<div class="playBlock" id= "TG6" ></div>
+										<div class="playBlock" id= "TH6" ></div>
+										<div class="playBlock" id= "TI6" ></div>
+										<div class="playBlock" id= "TJ6" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">7</div>
+										<div class="playBlock" id= "TA7" ></div>
+										<div class="playBlock" id= "TB7" ></div>
+										<div class="playBlock" id= "TC7" ></div>
+										<div class="playBlock" id= "TD7" ></div>
+										<div class="playBlock" id= "TE7" ></div>
+										<div class="playBlock" id= "TF7" ></div>
+										<div class="playBlock" id= "TG7" ></div>
+										<div class="playBlock" id= "TH7" ></div>
+										<div class="playBlock" id= "TI7" ></div>
+										<div class="playBlock" id= "TJ7" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">8</div>
+										<div class="playBlock" id= "TA8" ></div>
+										<div class="playBlock" id= "TB8" ></div>
+										<div class="playBlock" id= "TC8" ></div>
+										<div class="playBlock" id= "TD8" ></div>
+										<div class="playBlock" id= "TE8" ></div>
+										<div class="playBlock" id= "TF8" ></div>
+										<div class="playBlock" id= "TG8" ></div>
+										<div class="playBlock" id= "TH8" ></div>
+										<div class="playBlock" id= "TI8" ></div>
+										<div class="playBlock" id= "TJ8" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">9</div>
+										<div class="playBlock" id= "TA9" ></div>
+										<div class="playBlock" id= "TB9" ></div>
+										<div class="playBlock" id= "TC9" ></div>
+										<div class="playBlock" id= "TD9" ></div>
+										<div class="playBlock" id= "TE9" ></div>
+										<div class="playBlock" id= "TF9" ></div>
+										<div class="playBlock" id= "TG9" ></div>
+										<div class="playBlock" id= "TH9" ></div>
+										<div class="playBlock" id= "TI9" ></div>
+										<div class="playBlock" id= "TJ9" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">10</div>
+										<div class="playBlock" id= "TA10" ></div>
+										<div class="playBlock" id= "TB10" ></div>
+										<div class="playBlock" id= "TC10" ></div>
+										<div class="playBlock" id= "TD10" ></div>
+										<div class="playBlock" id= "TE10" ></div>
+										<div class="playBlock" id= "TF10" ></div>
+										<div class="playBlock" id= "TG10" ></div>
+										<div class="playBlock" id= "TH10" ></div>
+										<div class="playBlock" id= "TI10" ></div>
+										<div class="playBlock" id= "TJ10" ></div>
+							</div>
+						</div>
+					</div>
+					
+					<div id = "botGrid" class="grid">
+						<div id="grid" class="board">
+							<div class="column">
+										<div class="playBlock"></div>
+										<div class="playBlock">A</div>
+										<div class="playBlock">B</div>
+										<div class="playBlock">C</div>
+										<div class="playBlock">D</div>
+										<div class="playBlock">E</div>
+										<div class="playBlock">F</div>
+										<div class="playBlock">G</div>
+										<div class="playBlock">H</div>
+										<div class="playBlock">I</div>
+										<div class="playBlock">J</div>
+							</div>
+							<div class="column">
+										<div class="playBlock">1</div>
+										<div class="playBlock" id= "BotA1" ></div>
+										<div class="playBlock" id= "BotB1" ></div>
+										<div class="playBlock" id= "BotC1" ></div>
+										<div class="playBlock" id= "BotD1" ></div>
+										<div class="playBlock" id= "BotE1" ></div>
+										<div class="playBlock" id= "BotF1" ></div>
+										<div class="playBlock" id= "BotG1" ></div>
+										<div class="playBlock" id= "BotH1" ></div>
+										<div class="playBlock" id= "BotI1" ></div>
+										<div class="playBlock" id= "BotJ1" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">2</div>
+										<div class="playBlock" id= "BotA2" ></div>
+										<div class="playBlock" id= "BotB2" ></div>
+										<div class="playBlock" id= "BotC2" ></div>
+										<div class="playBlock" id= "BotD2" ></div>
+										<div class="playBlock" id= "BotE2" ></div>
+										<div class="playBlock" id= "BotF2" ></div>
+										<div class="playBlock" id= "BotG2" ></div>
+										<div class="playBlock" id= "BotH2" ></div>
+										<div class="playBlock" id= "BotI2" ></div>
+										<div class="playBlock" id= "BotJ2" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">3</div>
+										<div class="playBlock" id= "BotA3" ></div>
+										<div class="playBlock" id= "BotB3" ></div>
+										<div class="playBlock" id= "BotC3" ></div>
+										<div class="playBlock" id= "BotD3" ></div>
+										<div class="playBlock" id= "BotE3" ></div>
+										<div class="playBlock" id= "BotF3" ></div>
+										<div class="playBlock" id= "BotG3" ></div>
+										<div class="playBlock" id= "BotH3" ></div>
+										<div class="playBlock" id= "BotI3" ></div>
+										<div class="playBlock" id= "BotJ3" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">4</div>
+										<div class="playBlock" id= "BotA4" ></div>
+										<div class="playBlock" id= "BotB4" ></div>
+										<div class="playBlock" id= "BotC4" ></div>
+										<div class="playBlock" id= "BotD4" ></div>
+										<div class="playBlock" id= "BotE4" ></div>
+										<div class="playBlock" id= "BotF4" ></div>
+										<div class="playBlock" id= "BotG4" ></div>
+										<div class="playBlock" id= "BotH4" ></div>
+										<div class="playBlock" id= "BotI4" ></div>
+										<div class="playBlock" id= "BotJ4" ></div>
+										</div>
+							<div class="column">
+										<div class="playBlock" id= "">5</div>
+										<div class="playBlock" id= "BotA5" ></div>
+										<div class="playBlock" id= "BotB5" ></div>
+										<div class="playBlock" id= "BotC5" ></div>
+										<div class="playBlock" id= "BotD5" ></div>
+										<div class="playBlock" id= "BotE5" ></div>
+										<div class="playBlock" id= "BotF5" ></div>
+										<div class="playBlock" id= "BotG5" ></div>
+										<div class="playBlock" id= "BotH5" ></div>
+										<div class="playBlock" id= "BotI5" ></div>
+										<div class="playBlock" id= "BotJ5" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">6</div>
+										<div class="playBlock" id= "BotA6" ></div>
+										<div class="playBlock" id= "BotB6" ></div>
+										<div class="playBlock" id= "BotC6" ></div>
+										<div class="playBlock" id= "BotD6" ></div>
+										<div class="playBlock" id= "BotE6" ></div>
+										<div class="playBlock" id= "BotF6" ></div>
+										<div class="playBlock" id= "BotG6" ></div>
+										<div class="playBlock" id= "BotH6" ></div>
+										<div class="playBlock" id= "BotI6" ></div>
+										<div class="playBlock" id= "BotJ6" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">7</div>
+										<div class="playBlock" id= "BotA7" ></div>
+										<div class="playBlock" id= "BotB7" ></div>
+										<div class="playBlock" id= "BotC7" ></div>
+										<div class="playBlock" id= "BotD7" ></div>
+										<div class="playBlock" id= "BotE7" ></div>
+										<div class="playBlock" id= "BotF7" ></div>
+										<div class="playBlock" id= "BotG7" ></div>
+										<div class="playBlock" id= "BotH7" ></div>
+										<div class="playBlock" id= "BotI7" ></div>
+										<div class="playBlock" id= "BotJ7" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">8</div>
+										<div class="playBlock" id= "BotA8" ></div>
+										<div class="playBlock" id= "BotB8" ></div>
+										<div class="playBlock" id= "BotC8" ></div>
+										<div class="playBlock" id= "BotD8" ></div>
+										<div class="playBlock" id= "BotE8" ></div>
+										<div class="playBlock" id= "BotF8" ></div>
+										<div class="playBlock" id= "BotG8" ></div>
+										<div class="playBlock" id= "BotH8" ></div>
+										<div class="playBlock" id= "BotI8" ></div>
+										<div class="playBlock" id= "BotJ8" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">9</div>
+										<div class="playBlock" id= "BotA9" ></div>
+										<div class="playBlock" id= "BotB9" ></div>
+										<div class="playBlock" id= "BotC9" ></div>
+										<div class="playBlock" id= "BotD9" ></div>
+										<div class="playBlock" id= "BotE9" ></div>
+										<div class="playBlock" id= "BotF9" ></div>
+										<div class="playBlock" id= "BotG9" ></div>
+										<div class="playBlock" id= "BotH9" ></div>
+										<div class="playBlock" id= "BotI9" ></div>
+										<div class="playBlock" id= "BotJ9" ></div>
+							</div>
+							<div class="column">
+										<div class="playBlock" id= "">10</div>
+										<div class="playBlock" id= "BotA10" ></div>
+										<div class="playBlock" id= "BotB10" ></div>
+										<div class="playBlock" id= "BotC10" ></div>
+										<div class="playBlock" id= "BotD10" ></div>
+										<div class="playBlock" id= "BotE10" ></div>
+										<div class="playBlock" id= "BotF10" ></div>
+										<div class="playBlock" id= "BotG10" ></div>
+										<div class="playBlock" id= "BotH10" ></div>
+										<div class="playBlock" id= "BotI10" ></div>
+										<div class="playBlock" id= "BotJ10" ></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+	</body>
+</html>

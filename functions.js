@@ -54,22 +54,52 @@
 			}
 			//ensure that if we loop again our second prompt will appear
 			firstLoop=false;
-		}
-		
-		//get a more usable string for the ships
+			
 		ships = temp;
 		//sort to ensure the order of the string is Aircraft  carrier, battleship then Submarine.
 		ships.sort();
-		var outString = '';
+
 		
-		
-		for(j=0;j<ships.length;j++)
-		{
-			outString = outString+generateFullString(ships[j], 5-j);
+			for(j=0;j<ships.length;j++)
+			{
+				ships[j]=generateFullString(ships[j], 5-j);
+			}
+			a = ships[0].split(' ');
+			b = ships[1].split(' ');
+			s = ships[2].split(' ');
+			
+			for(i=0;i<a.length;i=i+2)
+			{
+				for(j=0;j<b.length;j=j+2)
+				{
+					if((a[i]+a[i+1])==(b[j]+b[j+1]))
+					{
+						placeCheck = false;
+					}
+				}
+				for(k=0;k<s.length;k=k+2)
+				{
+					if((a[i]+a[i+1])==(s[k]+s[k+1]))
+					{
+						placeCheck = false;
+					}
+				}
+			}
+			for(j=0;j<b.length;j=j+2)
+			{
+				for(k=0;k<s.length;k=k+2)
+				{
+					if((b[j]+b[j+1])==(s[k]+s[k+1]))
+					{
+						placeCheck = false;
+					}
+				}
+			}
 		}
-		//reduces placement from having spaces
-		placements = outString.split(' ');
-		return placements;
+		
+		//get a more usable string for the ships
+		var outString = a+b+s;
+		return outString;
 		
 	}
 	
@@ -95,7 +125,7 @@ function generateFullString(ship, length)
 			for(i=0;i<length;i++)
 			{
 				
-				st = st+(String.fromCharCode(k+i)+ships[0].charAt(1))+' ';
+				st = st+(String.fromCharCode(k+i)+ship.charAt(1))+' ';
 			}
 		}
 		return st;
@@ -123,14 +153,36 @@ function playerInfo()
 		sessionStorage.setItem('currentPlayer', '2');
 		sessionStorage.setItem('playOneScore', 24);
 		sessionStorage.setItem('playTwoScore', 24);
+		changeTurns();
 		//Begin Playing
 }
 function Play(clicked_id)
 {
-	
-
 	document.getElementById('topGrid').style.display = 'none';
 	document.getElementById('botGrid').style.display = 'none';
+	var swap = sessionStorage.getItem('currentPlayer');
+	var enemy;
+	switch(swap){
+	case '2':
+	
+		enemy = sessionStorage.getItem('playOnePlace');
+
+		break;
+	case '1':
+	
+		enemy = sessionStorage.getItem('playTwoPlace');
+
+		break;
+	}
+	
+	var currentID = clicked_id.replace(/T/, "");
+	document.write(currentID);
+	//FOR LOOP TO CHECK IF THE BOX CLICKED IS A HIT OR A MISS, ADD THE SESSIONSTORAGE FOR HIT/MISS TRACKING
+	for(i=0;i<enemy.length;i=i+2)
+	{
+		
+	}
+	
 	changeTurns();
 	
 }
@@ -149,7 +201,7 @@ function changeTurns()
 	case '1':
 		currentName = sessionStorage.getItem('playTwoName');
 		currentPlace = sessionStorage.getItem('playTwoPlace');
-		sessionStorage.setItem('currentPlayer','1');
+		sessionStorage.setItem('currentPlayer','2');
 		break;
 	}
 	alert('It is '+currentName+'\'s Turn');
@@ -172,5 +224,6 @@ function changeTurns()
 				document.getElementById(locID).innerHTML = 'S';
 	
 	}
+	
 	
 }

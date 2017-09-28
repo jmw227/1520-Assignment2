@@ -11,7 +11,7 @@ body
 
 .playBlock
 {
-	background-color: cyan;
+	
 	width: 20px;
     height: 20px;
     outline: 1px solid;
@@ -26,6 +26,7 @@ body
   grid-template-columns: 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;
   padding-bottom: 10px;
   padding-top: 10px;
+  background-color: cyan;
 }
 
 .grid
